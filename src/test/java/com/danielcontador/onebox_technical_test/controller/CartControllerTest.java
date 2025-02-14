@@ -74,7 +74,6 @@ public class CartControllerTest {
         Cart cart = new Cart();
 
         ProductDto productDto = new ProductDto("Eggs", 2);
-        ObjectMapper objectMapper = new ObjectMapper();
         String jsonRequest = objectMapper.writeValueAsString(productDto);
 
         Product product = new Product("Eggs", 2);

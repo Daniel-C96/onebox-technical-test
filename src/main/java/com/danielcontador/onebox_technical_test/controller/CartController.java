@@ -6,6 +6,7 @@ import com.danielcontador.onebox_technical_test.service.CartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class CartController {
     }
 
     @Operation(summary = "Creates a new cart",
-            description = "This endpoint allows you to create a new, empty cart."
+            description = "This endpoint creates a new, empty cart."
     )
     @PostMapping("/create/cart")
     private Cart createCart() {
@@ -40,18 +41,19 @@ public class CartController {
         return cartService.getCart(id);
     }
 
-    @Operation(summary = "Add a product to the cart",
-            description = "This endpoint allows you to add a product to an existing cart. You must provide the cart ID and the product ID."
+    @Operation(summary = "Adds a product to a cart",
+            description = "This endpoint adds a product to an existing cart. You must provide the cart ID " +
+                    "and a ProductDto in the body."
     )
     @PostMapping("/add/{cartId}")
     private Cart addProduct(
             @Parameter(description = "The ID of the cart to add the product to", required = true) @PathVariable UUID cartId,
-            @Parameter(description = "The Product DTO", required = true) @RequestBody ProductDto productDto) {
+            @Parameter(description = "The Product DTO", required = true) @Valid @RequestBody ProductDto productDto) {
         return cartService.addProduct(cartId, productDto);
     }
 
     @Operation(summary = "Deletes a cart by its ID",
-            description = "This endpoint allows you to delete a cart. You must provide the cart ID."
+            description = "This endpoint deletes a cart. You must provide the cart ID."
     )
     @DeleteMapping("/delete/cart/{cartId}")
     private Cart deleteCart(

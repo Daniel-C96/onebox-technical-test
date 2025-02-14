@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Product {
-    private long id;
+    private final long id;
     private static long counter = 0;
     private String description;
     private int amount;
