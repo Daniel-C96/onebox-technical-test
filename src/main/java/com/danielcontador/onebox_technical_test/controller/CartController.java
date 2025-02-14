@@ -45,7 +45,7 @@ public class CartController {
             description = "This endpoint adds a product to an existing cart. You must provide the cart ID " +
                     "and a ProductDto in the body."
     )
-    @PostMapping("/add/{cartId}")
+    @PutMapping("/add/{cartId}")
     private Cart addProduct(
             @Parameter(description = "The ID of the cart to add the product to", required = true) @PathVariable UUID cartId,
             @Parameter(description = "The Product DTO", required = true) @Valid @RequestBody ProductDto productDto) {

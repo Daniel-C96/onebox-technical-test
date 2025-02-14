@@ -17,7 +17,7 @@ public class CartServiceImplTest {
 
     @InjectMocks
     private CartServiceImpl cartService;
-    
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -76,7 +76,7 @@ public class CartServiceImplTest {
 
 
     @Test
-    void add_Products_ShouldThrowNoElementFoundException() {
+    void addProducts_ShouldThrowNoElementFoundException() {
         ProductDto productDto = new ProductDto("Eggs", 2);
 
         UUID randomUUID = UUID.randomUUID();

@@ -84,7 +84,7 @@ public class CartControllerTest {
         when(cartService.addProduct(cart.getId(), productDto)).thenReturn(cart);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v1/add/{cartId}", cart.getId(), product.getId())
+                        .put("/api/v1/add/{cartId}", cart.getId(), product.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
                 .andExpect(MockMvcResultMatchers.status().isOk())
