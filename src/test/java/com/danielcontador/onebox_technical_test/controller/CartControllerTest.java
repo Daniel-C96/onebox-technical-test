@@ -1,14 +1,15 @@
 package com.danielcontador.onebox_technical_test.controller;
 
+import com.danielcontador.onebox_technical_test.dto.ProductDto;
 import com.danielcontador.onebox_technical_test.entity.Cart;
 import com.danielcontador.onebox_technical_test.entity.Product;
 import com.danielcontador.onebox_technical_test.service.CartService;
-import com.danielcontador.onebox_technical_test.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -30,8 +31,6 @@ public class CartControllerTest {
     private CartController cartController;
     @MockitoBean
     private CartService cartService;
-    @MockitoBean
-    private ProductService productService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -73,17 +72,22 @@ public class CartControllerTest {
     @Test
     void addProduct_ShouldReturnCartWithProduct() throws Exception {
         Cart cart = new Cart();
+
+        ProductDto productDto = new ProductDto("Eggs", 2);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonRequest = objectMapper.writeValueAsString(productDto);
+
         Product product = new Product("Eggs", 2);
 
         when(cartService.getCart(cart.getId())).thenReturn(cart);
-        when(productService.getProduct(product.getId())).thenReturn(product);
-
         cart.getProducts().add(product);
 
-        when(cartService.addProduct(cart.getId(), 1L)).thenReturn(cart);
+        when(cartService.addProduct(cart.getId(), productDto)).thenReturn(cart);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v1/add/{cartId}/{productId}", cart.getId(), 1L))
+                        .post("/api/v1/add/{cartId}", cart.getId(), product.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("id").value(cart.getId().toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("products[0].description").value("Eggs"))

@@ -1,5 +1,6 @@
 package com.danielcontador.onebox_technical_test.controller;
 
+import com.danielcontador.onebox_technical_test.dto.ProductDto;
 import com.danielcontador.onebox_technical_test.entity.Cart;
 import com.danielcontador.onebox_technical_test.service.CartService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,11 +43,11 @@ public class CartController {
     @Operation(summary = "Add a product to the cart",
             description = "This endpoint allows you to add a product to an existing cart. You must provide the cart ID and the product ID."
     )
-    @PostMapping("/add/{cartId}/{productId}")
+    @PostMapping("/add/{cartId}")
     private Cart addProduct(
             @Parameter(description = "The ID of the cart to add the product to", required = true) @PathVariable UUID cartId,
-            @Parameter(description = "The ID of the product to add to the cart", required = true) @PathVariable long productId) {
-        return cartService.addProduct(cartId, productId);
+            @Parameter(description = "The Product DTO", required = true) @RequestBody ProductDto productDto) {
+        return cartService.addProduct(cartId, productDto);
     }
 
     @Operation(summary = "Deletes a cart by its ID",

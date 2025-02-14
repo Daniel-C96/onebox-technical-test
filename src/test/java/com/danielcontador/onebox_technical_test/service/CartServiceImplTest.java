@@ -1,11 +1,10 @@
 package com.danielcontador.onebox_technical_test.service;
 
+import com.danielcontador.onebox_technical_test.dto.ProductDto;
 import com.danielcontador.onebox_technical_test.entity.Cart;
-import com.danielcontador.onebox_technical_test.entity.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.Instant;
@@ -13,16 +12,12 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 public class CartServiceImplTest {
 
     @InjectMocks
     private CartServiceImpl cartService;
-
-    @Mock
-    private ProductService productService;
-
+    
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -71,28 +66,23 @@ public class CartServiceImplTest {
 
     @Test
     void addProducts_ShouldReturnTheCart() {
-        Product product = new Product("Eggs", 2);
-        product.setId(1L);
-
-        when(productService.getProduct(1L)).thenReturn(product);
-        System.out.println(productService.getProduct(1L));
+        ProductDto productDto = new ProductDto("Eggs", 2);
 
         Cart cart = cartService.createCart();
 
-        cartService.addProduct(cart.getId(), 1L);
+        cartService.addProduct(cart.getId(), productDto);
         assertEquals("Eggs", cart.getProducts().getFirst().getDescription());
     }
 
 
     @Test
     void add_Products_ShouldThrowNoElementFoundException() {
-        Product product = new Product("Eggs", 2);
-        when(productService.getProduct(1)).thenReturn(product);
+        ProductDto productDto = new ProductDto("Eggs", 2);
 
         UUID randomUUID = UUID.randomUUID();
 
         NoSuchElementException exceptionCart = assertThrows(NoSuchElementException.class, () -> {
-            cartService.addProduct(randomUUID, 1);
+            cartService.addProduct(randomUUID, productDto);
         });
         assertEquals("Cart not found with ID: " + randomUUID, exceptionCart.getMessage());
     }

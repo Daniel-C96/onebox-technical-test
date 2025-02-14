@@ -1,5 +1,6 @@
 package com.danielcontador.onebox_technical_test.service;
 
+import com.danielcontador.onebox_technical_test.dto.ProductDto;
 import com.danielcontador.onebox_technical_test.entity.Cart;
 import com.danielcontador.onebox_technical_test.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class CartServiceImpl implements CartService {
-
-    private final ProductService productService;
-
-    @Autowired
-    public CartServiceImpl(ProductService productService) {
-        this.productService = productService;
-    }
 
     private final Map<UUID, Cart> carts = new ConcurrentHashMap<>();
 
@@ -49,13 +43,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart addProduct(UUID cartId, long productId) {
+    public Cart addProduct(UUID cartId, ProductDto productDto) {
         Cart cart = carts.get(cartId);
         if (cart == null) {
             throw new NoSuchElementException("Cart not found with ID: " + cartId);
         }
 
-        Product product = productService.getProduct(productId);
+        Product product = new Product(productDto.description(), productDto.amount());
 
         cart.getProducts().add(product);
         cart.setLastUpdate(Instant.now());
@@ -63,7 +57,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    @Scheduled(fixedRate = 15000) // Ejecuta cada 15 segundos
+    @Scheduled(fixedRate = 15000) // Execute every 15 seconds
     public void deleteInactiveCarts() {
         Instant now = Instant.now();
         carts.entrySet().removeIf(entry -> {
@@ -74,5 +68,4 @@ public class CartServiceImpl implements CartService {
             return false;
         });
     }
-
 }
