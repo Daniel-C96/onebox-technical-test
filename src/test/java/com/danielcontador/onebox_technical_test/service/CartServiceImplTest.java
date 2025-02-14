@@ -71,7 +71,7 @@ public class CartServiceImplTest {
         Cart cart = cartService.createCart();
 
         cartService.addProduct(cart.getId(), productDto);
-        assertEquals("Eggs", cart.getProducts().getFirst().getDescription());
+        assertEquals("Eggs", cart.getProducts().get(0).getDescription());
     }
 
 
