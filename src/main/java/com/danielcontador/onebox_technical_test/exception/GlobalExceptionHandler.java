@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
-    //Handle invalid parameters passed in the request, ex: description of a product is too long
+    //Handle invalid parameters passed in the request, ex: the description of a product is too long
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleInvalidArgument(MethodArgumentNotValidException ex,
                                                                HttpServletRequest request) {
@@ -38,6 +38,7 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             errorMap.put(error.getField(), error.getDefaultMessage());
         });
+
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad parameters",

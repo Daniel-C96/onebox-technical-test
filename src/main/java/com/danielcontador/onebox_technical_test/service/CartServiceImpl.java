@@ -63,15 +63,16 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    @Scheduled(fixedRate = 15000) // Executes every 15 seconds
+    @Scheduled(fixedRate = 15000) // Ejecuta cada 15 segundos
     public void deleteInactiveCarts() {
         Instant now = Instant.now();
         carts.entrySet().removeIf(entry -> {
-            boolean expired = Duration.between(entry.getValue().getLastUpdate(), now).toMinutes() > 10;
-            if (expired) {
+            if (Duration.between(entry.getValue().getLastUpdate(), now).toMinutes() > 10) {
                 System.out.println("The cart with ID " + entry.getKey() + " has been eliminated due to inactivity.");
+                return true;
             }
-            return expired;
+            return false;
         });
     }
+
 }
