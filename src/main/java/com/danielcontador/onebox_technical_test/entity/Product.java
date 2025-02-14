@@ -4,13 +4,12 @@ import lombok.Data;
 
 @Data
 public class Product {
-    private final long id;
+    private final long id = generateId();
     private static long counter = 0;
     private String description;
     private int amount;
 
     public Product(String description, int amount) {
-        this.id = generateId();
         this.description = description;
         this.amount = amount;
     }
