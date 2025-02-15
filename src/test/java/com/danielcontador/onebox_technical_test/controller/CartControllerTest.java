@@ -3,6 +3,7 @@ package com.danielcontador.onebox_technical_test.controller;
 import com.danielcontador.onebox_technical_test.dto.ProductDto;
 import com.danielcontador.onebox_technical_test.entity.Cart;
 import com.danielcontador.onebox_technical_test.entity.Product;
+import com.danielcontador.onebox_technical_test.response.DeleteResponse;
 import com.danielcontador.onebox_technical_test.service.CartService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -27,8 +28,6 @@ public class CartControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @InjectMocks
-    private CartController cartController;
     @MockitoBean
     private CartService cartService;
 
@@ -42,7 +41,7 @@ public class CartControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/v1/create/cart"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("id").value(cart.getId().toString()));
 
     }
@@ -94,14 +93,14 @@ public class CartControllerTest {
     }
 
     @Test
-    void deleteCart_ShouldReturnDeletedCart() throws Exception {
+    void deleteCart_ShouldReturnDeleteResponse() throws Exception {
         Cart cart = new Cart();
-        when(cartService.deleteCart(cart.getId())).thenReturn(cart);
+        when(cartService.deleteCart(cart.getId())).thenReturn(new DeleteResponse("terminated", "the cart has been deleted"));
 
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/api/v1/delete/cart/{cartId}", cart.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("id").value(cart.getId().toString()));
+                .andExpect(MockMvcResultMatchers.jsonPath("status").value("terminated"));
     }
 
     @Test

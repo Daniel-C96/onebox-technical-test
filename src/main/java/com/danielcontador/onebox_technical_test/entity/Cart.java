@@ -12,4 +12,8 @@ public class Cart {
     private final UUID id = UUID.randomUUID();
     private List<Product> products = new ArrayList<>();
     private Instant lastUpdate = Instant.now();
+
+    public void updateLastModified() {
+        this.lastUpdate = Instant.now();
+    }
 }
