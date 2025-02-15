@@ -4,8 +4,7 @@ import com.danielcontador.onebox_technical_test.dto.ProductDto;
 import com.danielcontador.onebox_technical_test.entity.Cart;
 import com.danielcontador.onebox_technical_test.entity.Product;
 import com.danielcontador.onebox_technical_test.response.DeleteResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +16,18 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
+@Slf4j
 public class CartServiceImpl implements CartService {
 
     private final Map<UUID, Cart> carts = new ConcurrentHashMap<>();
-    private final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
+
     private static final String CART_NOT_FOUND = "Cart not found with ID: ";
 
     @Override
     public Cart createCart() {
         Cart cart = new Cart();
         carts.put(cart.getId(), cart);
-        logger.info("New cart created with ID: {}", cart.getId());
+        log.info("New cart created with ID: {}", cart.getId());
         return cart;
     }
 
@@ -42,7 +42,7 @@ public class CartServiceImpl implements CartService {
         Optional.ofNullable(carts.remove(cartId))
                 .orElseThrow(() -> new NoSuchElementException(CART_NOT_FOUND + cartId));
 
-        logger.info("The cart with ID: {} has been deleted", cartId);
+        log.info("The cart with ID: {} has been deleted", cartId);
         return new DeleteResponse("terminated", "the cart has been deleted");
     }
 
@@ -55,7 +55,7 @@ public class CartServiceImpl implements CartService {
         cart.getProducts().add(product);
         cart.updateLastModified();
 
-        logger.info("Product '{}' added to cart {}", productDto.description(), cartId);
+        log.info("Product '{}' added to cart {}", productDto.description(), cartId);
         return cart;
     }
 
@@ -67,7 +67,7 @@ public class CartServiceImpl implements CartService {
         carts.entrySet().removeIf(entry -> {
             boolean isExpired = entry.getValue().getLastUpdate().isBefore(expirationTime);
             if (isExpired) {
-                logger.info("The cart with ID {} has been removed due to inactivity.", entry.getKey());
+                log.info("The cart with ID {} has been removed due to inactivity.", entry.getKey());
             }
             return isExpired;
         });
