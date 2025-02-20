@@ -10,7 +10,7 @@ tags:
     description: "Operations related to shopping carts, including creation, viewing,\
     \ modifying cart contents, and deletion."
 paths:
-  /api/v1/add/{cartId}:
+  /api/v1/carts/{cartId}:
     put:
       summary: "Adds a product to a cart"
       description: "This endpoint adds a product to an existing cart. You must provide\
@@ -58,19 +58,7 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/Cart"
-  /api/v1/create/cart:
-    post:
-      summary: "Creates a new cart"
-      description: "This endpoint creates a new, empty cart."
-      operationId: ""
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/Cart"
-  /api/v1/delete/cart/{cartId}:
+
     delete:
       summary: "Deletes a cart by its ID"
       description: "This endpoint deletes a cart. You must provide the cart ID."
@@ -90,6 +78,20 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/DeleteResponse"
+
+  /api/v1/carts:
+    post:
+      summary: "Creates a new cart"
+      description: "This endpoint creates a new, empty cart."
+      operationId: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Cart"
+
 components:
   schemas:
     ProductDto:

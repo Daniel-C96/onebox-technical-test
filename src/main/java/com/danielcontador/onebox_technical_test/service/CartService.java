@@ -1,8 +1,8 @@
 package com.danielcontador.onebox_technical_test.service;
 
-import com.danielcontador.onebox_technical_test.dto.ProductDto;
+import com.danielcontador.onebox_technical_test.dto.request.ProductDto;
+import com.danielcontador.onebox_technical_test.dto.response.DeleteResponse;
 import com.danielcontador.onebox_technical_test.entity.Cart;
-import com.danielcontador.onebox_technical_test.response.DeleteResponse;
 
 import java.util.UUID;
 

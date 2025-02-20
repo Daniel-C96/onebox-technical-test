@@ -1,13 +1,12 @@
 package com.danielcontador.onebox_technical_test.exception;
 
-import com.danielcontador.onebox_technical_test.response.ErrorResponse;
+import com.danielcontador.onebox_technical_test.dto.response.ErrorResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.HashMap;
 import java.util.Map;

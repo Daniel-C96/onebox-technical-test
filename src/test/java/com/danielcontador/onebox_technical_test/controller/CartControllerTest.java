@@ -1,13 +1,12 @@
 package com.danielcontador.onebox_technical_test.controller;
 
-import com.danielcontador.onebox_technical_test.dto.ProductDto;
+import com.danielcontador.onebox_technical_test.dto.request.ProductDto;
+import com.danielcontador.onebox_technical_test.dto.response.DeleteResponse;
 import com.danielcontador.onebox_technical_test.entity.Cart;
 import com.danielcontador.onebox_technical_test.entity.Product;
-import com.danielcontador.onebox_technical_test.response.DeleteResponse;
 import com.danielcontador.onebox_technical_test.service.CartService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -40,7 +39,7 @@ public class CartControllerTest {
         when(cartService.createCart()).thenReturn(cart);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v1/create/cart"))
+                        .post("/api/v1/carts"))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("id").value(cart.getId().toString()));
 
@@ -83,7 +82,7 @@ public class CartControllerTest {
         when(cartService.addProduct(cart.getId(), productDto)).thenReturn(cart);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/v1/add/{cartId}", cart.getId(), product.getId())
+                        .put("/api/v1/carts/{cartId}", cart.getId(), product.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -98,7 +97,7 @@ public class CartControllerTest {
         when(cartService.deleteCart(cart.getId())).thenReturn(new DeleteResponse("terminated", "the cart has been deleted"));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/api/v1/delete/cart/{cartId}", cart.getId()))
+                        .delete("/api/v1/carts/{cartId}", cart.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("status").value("terminated"));
     }
@@ -107,7 +106,7 @@ public class CartControllerTest {
     void deleteCart_ShouldThrowElementNotFoundException() throws Exception {
         when(cartService.deleteCart(any(UUID.class))).thenThrow(new NoSuchElementException());
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/api/v1/delete/cart/{cartId}", UUID.randomUUID()))
+                        .delete("/api/v1/carts/{cartId}", UUID.randomUUID()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

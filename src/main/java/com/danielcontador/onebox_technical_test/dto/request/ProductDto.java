@@ -1,4 +1,4 @@
-package com.danielcontador.onebox_technical_test.dto;
+package com.danielcontador.onebox_technical_test.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;

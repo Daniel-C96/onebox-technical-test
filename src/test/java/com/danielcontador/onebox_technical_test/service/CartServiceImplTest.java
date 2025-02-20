@@ -1,6 +1,6 @@
 package com.danielcontador.onebox_technical_test.service;
 
-import com.danielcontador.onebox_technical_test.dto.ProductDto;
+import com.danielcontador.onebox_technical_test.dto.request.ProductDto;
 import com.danielcontador.onebox_technical_test.entity.Cart;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
